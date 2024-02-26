@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.converter.UserToUserDtoConverter;
+import com.example.model.User;
 import com.example.model.dto.UserDto;
 import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
+    private final UserToUserDtoConverter converter;
 
     @GetMapping
     List<UserDto> getUsers() {
-        return service.getUsers();
+        return service.getUsers().stream()
+                .map(converter::convert)
+                .toList();
     }
 
     @GetMapping("/{id}")
     UserDto getUser(@PathVariable int id) {
-        return service.getUserById(id);
+        User user = service.getUserById(id);
+        return converter.convert(user);
     }
 }
