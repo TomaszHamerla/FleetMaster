@@ -20,6 +20,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+// For JUnit 5, need to use @ExtendWith
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
     @Mock
