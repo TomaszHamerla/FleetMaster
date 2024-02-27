@@ -13,18 +13,20 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(authorizeHttpRequest->authorizeHttpRequest
-                        .requestMatchers(HttpMethod.GET,"api/v1/users").permitAll()
-                        .requestMatchers(HttpMethod.GET,"api/v1/users/**").hasAuthority("ADMIN")
+                .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
+                        .requestMatchers(HttpMethod.GET, "api/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/v1/users/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable) // no problem to put/patch methods
                 .build();
     }
+
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 }

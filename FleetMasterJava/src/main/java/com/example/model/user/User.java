@@ -19,7 +19,8 @@ public class User {
     @NotBlank(message = "Password is required")
     private String password;
     @Email
+    @NotBlank(message = "Email is required")
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    }
+}

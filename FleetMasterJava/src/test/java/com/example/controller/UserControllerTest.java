@@ -1,8 +1,10 @@
 package com.example.controller;
 
 import com.example.exception.UserNotFoundException;
+import com.example.model.user.Role;
 import com.example.model.user.User;
 import com.example.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -17,11 +19,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false) // Turn off Spring Security
@@ -29,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
     @MockBean
     UserService service;
     List<User> users;
@@ -108,5 +113,37 @@ class UserControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(json));
         JSONAssert.assertEquals(json, resultActions.andReturn().getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    void createUserTestSuccess() throws Exception {
+        //given
+        User user = users.get(0);
+        user.setRole(Role.ADMIN);
+        var json = objectMapper.writeValueAsString(user);
+        given(service.save(user)).willReturn(user);
+
+        //whne + then
+        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Jhon"))
+                .andExpect(jsonPath("$.email").value("jhon@gmail.com"));
+    }
+
+    @Test
+    void createUserWithEmptyDataShouldReturnStatusCode400() throws Exception {
+        //given
+        User user = users.get(0);
+        user.setUsername("");
+        var json = objectMapper.writeValueAsString(user);
+        given(service.save(user)).willReturn(user);
+
+        //when + then
+        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message", containsString("Username is required")));
+
     }
 }
