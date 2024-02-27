@@ -3,6 +3,7 @@ package com.example.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,12 +17,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
-                        .requestMatchers(HttpMethod.GET, "api/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/v1/users").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/v1/users/**").hasAuthority("ADMIN")
+                       // .requestMatchers(HttpMethod.GET, "api/v1/users/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable) // no problem to put/patch methods
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 

@@ -1,9 +1,13 @@
 package com.example.service;
 
 import com.example.exception.UserNotFoundException;
+import com.example.model.user.MyUserPrincipal;
+import com.example.model.user.Role;
 import com.example.model.user.User;
 import com.example.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getRole() ==null){
+            user.setRole(Role.USER);
+        }
         return repository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username)
+                .map(MyUserPrincipal::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User with given name not found"));
     }
 }
