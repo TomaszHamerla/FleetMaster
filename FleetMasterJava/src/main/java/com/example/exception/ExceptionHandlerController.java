@@ -2,6 +2,7 @@ package com.example.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,9 +21,9 @@ public class ExceptionHandlerController {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    ErrorResponse handleMethodArgumentNotValidException(Exception e) {
         log.error(e.getMessage());
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
