@@ -8,4 +8,5 @@ public interface UserService {
     List<User> getUsers();
 
     User getUserById(int id);
+    User save(User user);
 }

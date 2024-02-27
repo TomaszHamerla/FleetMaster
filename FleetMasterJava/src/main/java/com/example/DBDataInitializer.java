@@ -2,7 +2,7 @@ package com.example;
 
 import com.example.model.user.Role;
 import com.example.model.user.User;
-import com.example.repository.UserRepository;
+import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DBDataInitializer implements CommandLineRunner {
-    private final UserRepository repository;
+    private final UserService userService;
+
     @Override
     public void run(String... args) throws Exception {
         User u1 = new User();
@@ -25,8 +26,8 @@ public class DBDataInitializer implements CommandLineRunner {
         u2.setEmail("doe@gmail.com");
         u2.setRole(Role.USER);
 
-        repository.save(u1);
-        repository.save(u2);
+        userService.save(u1);
+        userService.save(u2);
 
     }
 }
