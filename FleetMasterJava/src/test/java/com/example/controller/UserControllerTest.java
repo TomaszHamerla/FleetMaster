@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.exception.UserNotFoundException;
-import com.example.model.User;
+import com.example.model.user.User;
 import com.example.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

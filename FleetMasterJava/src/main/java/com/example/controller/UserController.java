@@ -1,8 +1,8 @@
 package com.example.controller;
 
 import com.example.converter.UserToUserDtoConverter;
-import com.example.model.User;
-import com.example.model.dto.UserDto;
+import com.example.model.user.User;
+import com.example.model.user.dto.UserDto;
 import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

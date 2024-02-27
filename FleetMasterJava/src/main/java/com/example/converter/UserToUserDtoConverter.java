@@ -1,7 +1,7 @@
 package com.example.converter;
 
-import com.example.model.User;
-import com.example.model.dto.UserDto;
+import com.example.model.user.User;
+import com.example.model.user.dto.UserDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

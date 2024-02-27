@@ -1,4 +1,4 @@
-package com.example.model.dto;
+package com.example.model.user.dto;
 
 public record UserDto(int id, String name, String email) {
 }

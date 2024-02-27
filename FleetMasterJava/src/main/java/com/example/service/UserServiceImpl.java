@@ -1,7 +1,7 @@
 package com.example.service;
 
 import com.example.exception.UserNotFoundException;
-import com.example.model.User;
+import com.example.model.user.User;
 import com.example.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
