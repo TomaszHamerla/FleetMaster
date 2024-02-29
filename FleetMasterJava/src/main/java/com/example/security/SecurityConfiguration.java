@@ -52,9 +52,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
-                        .requestMatchers(HttpMethod.GET, "api/v1/users").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll()
-                        // .requestMatchers(HttpMethod.GET, "api/v1/users/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable) // no problem to put/patch methods
