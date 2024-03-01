@@ -43,8 +43,7 @@ public class UserControllerIntegrationTest {
         MvcResult mvcResult = jhon.andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
         JSONObject jsonObject = new JSONObject(contentAsString);
-        String token = "Bearer " + jsonObject.get("token").toString();
-        this.token = token;
+        this.token = "Bearer " + jsonObject.get("token").toString();
     }
 
     @Test
