@@ -15,12 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank(message = "Username is required")
-    @Column(unique = true)
+    @Column(unique = true, length = 35)
     private String username;
     @NotBlank(message = "Password is required")
     private String password;
     @Email
-    @Column(unique = true)
+    @Column(unique = true, length = 35)
     @NotBlank(message = "Email is required")
     private String email;
     @Enumerated(EnumType.STRING)

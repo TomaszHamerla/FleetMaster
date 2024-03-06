@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.exception.TooLongValueException;
 import com.example.exception.UserNotFoundException;
 import com.example.model.user.MyUserPrincipal;
 import com.example.model.user.Role;
@@ -32,8 +33,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        if (isValueLongerThen35Chars(user.getUsername(), user.getEmail())) {
+            throw new TooLongValueException("Username or email too long for type character varying(35)");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(user.getRole() ==null){
+        if (user.getRole() == null) {
             user.setRole(Role.USER);
         }
         return repository.save(user);
@@ -44,5 +48,9 @@ public class UserServiceImpl implements UserService {
         return repository.findByUsername(username)
                 .map(MyUserPrincipal::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with given name not found"));
+    }
+
+    private boolean isValueLongerThen35Chars(String username, String email) {
+        return username.length() > 35 || email.length() > 35;
     }
 }

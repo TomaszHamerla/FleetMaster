@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.exception.TooLongValueException;
 import com.example.exception.UserNotFoundException;
 import com.example.model.user.Role;
 import com.example.model.user.User;
@@ -109,5 +110,17 @@ class UserServiceImplTest {
         assertThat(saveUser.getEmail()).isEqualTo(user.getEmail());
         assertThat(saveUser.getRole()).isEqualTo(user.getRole());
         verify(repository, times(1)).save(user);
+    }
+
+    @Test
+    void saveUserWithUsernameIsLongerThen35CharactersShouldThrowTooLongValueException() {
+        //given
+        User user = users.get(0);
+        user.setUsername("asdasdasdasasasasasasasasasassasasas");
+        //when
+        Throwable exception = catchThrowable(() -> service.save(user));
+        //then
+        assertThat(exception).isInstanceOf(TooLongValueException.class)
+                .hasMessage("Username or email too long for type character varying(35)");
     }
 }
