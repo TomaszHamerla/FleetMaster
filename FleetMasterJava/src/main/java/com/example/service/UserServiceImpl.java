@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
 
         if (!hasPasswordMinimumLength(user.getPassword()))
             throw new TooShortPasswordException("Given password is to short ! 3 characters at least");
-                    user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getRole() == null) {
             user.setRole(Role.USER);
         }

@@ -136,4 +136,19 @@ class UserServiceImplTest {
         assertThat(exception).isInstanceOf(TooShortPasswordException.class)
                 .hasMessage("Given password is to short ! 3 characters at least");
     }
+    @Test
+    void saveUserWithGivenNoRoleShouldCreateUserWithRoleUser(){
+        //given
+        User user = new User();
+        user.setUsername("UserExample");
+        user.setEmail("example@gmail.com");
+        user.setPassword("examplePassword");
+        //no setting role
+        given(passwordEncoder.encode(user.getPassword())).willReturn("EncodedPassword");
+        given(service.save(user)).willReturn(user);
+        //when
+        User userSaved=service.save(user);
+        //then
+        assertThat(userSaved.getRole()).isEqualTo(Role.USER);
+    }
 }
