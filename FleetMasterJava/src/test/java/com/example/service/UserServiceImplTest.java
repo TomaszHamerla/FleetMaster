@@ -151,4 +151,15 @@ class UserServiceImplTest {
         //then
         assertThat(userSaved.getRole()).isEqualTo(Role.USER);
     }
+    @Test
+    void testPasswordEncodeShouldReturnUserWithEncodePassword(){
+        //given
+        User user = users.get(0);
+        given(passwordEncoder.encode(user.getPassword())).willReturn("Encoded_Password");
+        given(repository.save(user)).willReturn(user);
+        //when
+        User save = service.save(user);
+        //then
+        assertThat(user.getPassword()).isEqualTo("Encoded_Password");
+    }
 }
