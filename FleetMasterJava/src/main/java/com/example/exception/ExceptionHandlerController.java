@@ -26,11 +26,11 @@ public class ExceptionHandlerController {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class,TooLongValueException.class,DataIntegrityViolationException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class,
+            TooLongValueException.class, DataIntegrityViolationException.class, TooShortPasswordException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleMethodArgumentNotValidException(Exception e) {
         log.error(e.getMessage());
-        System.out.println(e.toString());
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 

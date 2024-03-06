@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.exception.TooLongValueException;
+import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
 import com.example.model.user.MyUserPrincipal;
 import com.example.model.user.Role;
@@ -33,10 +34,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        if (isValueLongerThen35Chars(user.getUsername(), user.getEmail())) {
+        if (isValueLongerThen35Chars(user.getUsername(), user.getEmail()))
             throw new TooLongValueException("Username or email too long for type character varying(35)");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (!hasPasswordMinimumLength(user.getPassword()))
+            throw new TooShortPasswordException("Given password is to short ! 3 characters at least");
+                    user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getRole() == null) {
             user.setRole(Role.USER);
         }
@@ -52,5 +55,9 @@ public class UserServiceImpl implements UserService {
 
     private boolean isValueLongerThen35Chars(String username, String email) {
         return username.length() > 35 || email.length() > 35;
+    }
+
+    private boolean hasPasswordMinimumLength(String password) {
+        return password.length() >= 3;
     }
 }

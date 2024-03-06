@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.exception.TooLongValueException;
+import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
 import com.example.model.user.Role;
 import com.example.model.user.User;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.catchException;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -85,10 +86,10 @@ class UserServiceImplTest {
         given(repository.findById(anyInt())).willReturn(Optional.empty());
 
         //when
-        Throwable thrown = catchThrowable(() -> service.getUserById(1));
+        Exception exception = catchException(() -> service.getUserById(1));
 
         //then
-        assertThat(thrown)
+        assertThat(exception)
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("User not found");
         verify(repository, times(1)).findById(1);
@@ -118,9 +119,21 @@ class UserServiceImplTest {
         User user = users.get(0);
         user.setUsername("asdasdasdasasasasasasasasasassasasas");
         //when
-        Throwable exception = catchThrowable(() -> service.save(user));
+        Exception exception = catchException(() -> service.save(user));
         //then
         assertThat(exception).isInstanceOf(TooLongValueException.class)
                 .hasMessage("Username or email too long for type character varying(35)");
+    }
+
+    @Test
+    void saveUserWithUserPasswordIsShorterThen3CharactersShouldThrowTooShortPasswordException() {
+        //given
+        User user = users.get(0);
+        user.setPassword("12");
+        // when
+        Exception exception = catchException(() -> service.save(user));
+        //then
+        assertThat(exception).isInstanceOf(TooShortPasswordException.class)
+                .hasMessage("Given password is to short ! 3 characters at least");
     }
 }
