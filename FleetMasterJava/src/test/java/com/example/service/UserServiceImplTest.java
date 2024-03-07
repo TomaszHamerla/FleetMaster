@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.exception.InvalidCredentialsException;
 import com.example.exception.TooLongValueException;
 import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
@@ -20,7 +21,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.BDDAssertions.catchException;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -138,8 +138,9 @@ class UserServiceImplTest {
         assertThat(exception).isInstanceOf(TooShortPasswordException.class)
                 .hasMessage("Given password is to short ! 3 characters at least");
     }
+
     @Test
-    void saveUserWithGivenNoRoleShouldCreateUserWithRoleUser(){
+    void saveUserWithGivenNoRoleShouldCreateUserWithRoleUser() {
         //given
         User user = new User();
         user.setUsername("UserExample");
@@ -149,12 +150,13 @@ class UserServiceImplTest {
         given(passwordEncoder.encode(user.getPassword())).willReturn("EncodedPassword");
         given(service.save(user)).willReturn(user);
         //when
-        User userSaved=service.save(user);
+        User userSaved = service.save(user);
         //then
         assertThat(userSaved.getRole()).isEqualTo(Role.USER);
     }
+
     @Test
-    void testPasswordEncodeShouldReturnUserWithEncodePassword(){
+    void testPasswordEncodeShouldReturnUserWithEncodePassword() {
         //given
         User user = users.get(0);
         given(passwordEncoder.encode(user.getPassword())).willReturn("Encoded_Password");
@@ -164,9 +166,10 @@ class UserServiceImplTest {
         //then
         assertThat(user.getPassword()).isEqualTo("Encoded_Password");
     }
+
     //TDD updateUserCredentials
     @Test
-    void updateUserCredentialsChangeEmailSuccess(){
+    void updateUserCredentialsChangeEmailSuccess() {
         //given
         var newEmail = "newEmail@gmail.com";
         UserCredentials userCredentials = new UserCredentials(newEmail, null);
@@ -176,5 +179,19 @@ class UserServiceImplTest {
         User updatedUser = service.updateUserCredentials(0, userCredentials);
         //then
         assertThat(updatedUser.getEmail()).isEqualTo(newEmail);
+    }
+
+    @Test
+    void updateUserCredentialsChangeEmailWithIncorrectEmailShouldThrowInvalidCredentialsException() {
+        //given
+        var newEmail = "asdasdasdasasasasasasasasasassasasas";
+        UserCredentials userCredentials = new UserCredentials(newEmail, null);
+        User user = users.get(0);
+        given(repository.findById(anyInt())).willReturn(Optional.of(user));
+        //when
+        Exception exception = catchException(() -> service.updateUserCredentials(0, userCredentials));
+        //then
+        assertThat(exception).isInstanceOf(InvalidCredentialsException.class)
+                .hasMessage("Email or password is incorrect.");
     }
 }

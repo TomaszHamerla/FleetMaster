@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.exception.InvalidCredentialsException;
 import com.example.exception.TooLongValueException;
 import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        if (isValueLongerThen35Chars(user.getUsername(), user.getEmail()))
+        if (isValueLongerThen35Chars(user.getUsername()) || isValueLongerThen35Chars(user.getEmail()))
             throw new TooLongValueException("Username or email too long for type character varying(35)");
 
         if (!hasPasswordMinimumLength(user.getPassword()))
@@ -54,14 +55,19 @@ public class UserServiceImpl implements UserService {
                 .map(MyUserPrincipal::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with given name not found"));
     }
+
     @Override
     public User updateUserCredentials(int userId, UserCredentials userCredentials) {
         User user = getUserById(userId);
+        if (userCredentials.email() != null && isValueLongerThen35Chars(userCredentials.email()))
+            throw new InvalidCredentialsException("Email or password is incorrect.");
+
         user.setEmail(userCredentials.email());
         return user;
     }
-    private boolean isValueLongerThen35Chars(String username, String email) {
-        return username.length() > 35 || email.length() > 35;
+
+    private boolean isValueLongerThen35Chars(String val) {
+        return val.length() > 35;
     }
 
     private boolean hasPasswordMinimumLength(String password) {
