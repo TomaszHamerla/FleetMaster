@@ -206,4 +206,16 @@ class UserServiceImplTest {
         //then
         assertThat(updatedUser.getPassword()).isEqualTo("newEncodedPassword");
     }
+    //TDD
+    @Test
+    void updateUserCredentialsChangePasswordWithIncorrectPasswordShouldThrowInvalidCredentialsException(){
+        //given
+        var newPassword ="aa";
+        UserCredentials userCredentials = new UserCredentials(null, newPassword);
+        //when
+        Exception exception = catchException(() -> service.updateUserCredentials(0, userCredentials));
+        //then
+        assertThat(exception).isInstanceOf(InvalidCredentialsException.class)
+                .hasMessage("Email or password is incorrect.");
+    }
 }
