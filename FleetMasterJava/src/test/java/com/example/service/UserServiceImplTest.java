@@ -218,4 +218,30 @@ class UserServiceImplTest {
         assertThat(exception).isInstanceOf(InvalidCredentialsException.class)
                 .hasMessage("Email or password is incorrect.");
     }
+    //TDD
+    @Test
+    void updateUserCredentialsWithGivenPasswordAndNoEmailSuccess(){
+        //given
+        var newPassword = "minimalLong";
+        UserCredentials userCredentials = new UserCredentials(null, newPassword);
+        User user = users.get(0);           //jhon@gmail.com - email
+        given(repository.findById(anyInt())).willReturn(Optional.of(user));
+        given(passwordEncoder.encode(newPassword)).willReturn("newEncodedPassword");
+        //when
+        User updatedUser = service.updateUserCredentials(0, userCredentials);
+        //then
+        assertThat(updatedUser.getPassword()).isEqualTo("newEncodedPassword");
+        assertThat(updatedUser.getEmail()).isEqualTo("jhon@gmail.com");
+    }
+    //TDD
+    @Test
+    void updateUserCredentialsWithEmptyCredentialsShouldThrowInvalidCredentialsException(){
+        //given
+        UserCredentials userCredentials = new UserCredentials(null, null);
+        //when
+        Exception exception = catchException(() -> service.updateUserCredentials(0, userCredentials));
+        //then
+        assertThat(exception).isInstanceOf(InvalidCredentialsException.class)
+                .hasMessage("At least one of email or password must be provided. Please provide at least one to proceed.");
+    }
 }
