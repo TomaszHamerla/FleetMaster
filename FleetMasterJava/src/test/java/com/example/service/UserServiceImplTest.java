@@ -186,12 +186,24 @@ class UserServiceImplTest {
         //given
         var newEmail = "asdasdasdasasasasasasasasasassasasas";
         UserCredentials userCredentials = new UserCredentials(newEmail, null);
-        User user = users.get(0);
-        given(repository.findById(anyInt())).willReturn(Optional.of(user));
         //when
         Exception exception = catchException(() -> service.updateUserCredentials(0, userCredentials));
         //then
         assertThat(exception).isInstanceOf(InvalidCredentialsException.class)
                 .hasMessage("Email or password is incorrect.");
+    }
+    //TDD
+    @Test
+    void updateUserCredentialsChangePasswordSuccess(){
+        //given
+        var newPassword = "minimalLong";
+        UserCredentials userCredentials = new UserCredentials(null, newPassword);
+        User user = users.get(0);
+        given(repository.findById(anyInt())).willReturn(Optional.of(user));
+        given(passwordEncoder.encode(newPassword)).willReturn("newEncodedPassword");
+        //when
+        User updatedUser = service.updateUserCredentials(0, userCredentials);
+        //then
+        assertThat(updatedUser.getPassword()).isEqualTo("newEncodedPassword");
     }
 }

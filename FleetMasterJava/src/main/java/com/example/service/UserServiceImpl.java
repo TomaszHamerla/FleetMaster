@@ -58,10 +58,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUserCredentials(int userId, UserCredentials userCredentials) {
-        User user = getUserById(userId);
         if (userCredentials.email() != null && isValueLongerThen35Chars(userCredentials.email()))
             throw new InvalidCredentialsException("Email or password is incorrect.");
 
+        User user = getUserById(userId);
+        user.setPassword(passwordEncoder.encode(userCredentials.password()));
         user.setEmail(userCredentials.email());
         return user;
     }
