@@ -5,6 +5,7 @@ import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
 import com.example.model.user.Role;
 import com.example.model.user.User;
+import com.example.model.user.dto.UserCredentials;
 import com.example.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.BDDAssertions.catchException;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -161,5 +163,18 @@ class UserServiceImplTest {
         User save = service.save(user);
         //then
         assertThat(user.getPassword()).isEqualTo("Encoded_Password");
+    }
+    //TDD updateUserCredentials
+    @Test
+    void updateUserCredentialsChangeEmailSuccess(){
+        //given
+        var newEmail = "newEmail@gmail.com";
+        UserCredentials userCredentials = new UserCredentials(newEmail, null);
+        User user = users.get(0);
+        given(repository.findById(anyInt())).willReturn(Optional.of(user));
+        //when
+        User updatedUser = service.updateUserCredentials(0, userCredentials);
+        //then
+        assertThat(updatedUser.getEmail()).isEqualTo(newEmail);
     }
 }

@@ -6,6 +6,7 @@ import com.example.exception.UserNotFoundException;
 import com.example.model.user.MyUserPrincipal;
 import com.example.model.user.Role;
 import com.example.model.user.User;
+import com.example.model.user.dto.UserCredentials;
 import com.example.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,7 +54,12 @@ public class UserServiceImpl implements UserService {
                 .map(MyUserPrincipal::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with given name not found"));
     }
-
+    @Override
+    public User updateUserCredentials(int userId, UserCredentials userCredentials) {
+        User user = getUserById(userId);
+        user.setEmail(userCredentials.email());
+        return user;
+    }
     private boolean isValueLongerThen35Chars(String username, String email) {
         return username.length() > 35 || email.length() > 35;
     }
