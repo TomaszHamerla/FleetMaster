@@ -28,4 +28,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build and test with Maven
-      run: mvn --batch-mode package
+      run: ./FleetMasterJava/mvn --batch-mode package
