@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         var password = userCredentials.password();
         var email = userCredentials.email();
 
-        if (password==null&&email==null)
+        if (password == null && email == null)
             throw new InvalidCredentialsException("At least one of email or password must be provided. Please provide at least one to proceed.");
 
         if ((email != null && isValueLongerThen35Chars(email))
