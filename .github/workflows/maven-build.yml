@@ -11,8 +11,12 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'FleetMasterJava/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'FleetMasterJava/**'
 
 jobs:
   build:
