@@ -42,6 +42,9 @@ public class CarFetchServiceImpl implements CarFetchService {
         ModelResponse body = restClient.get()
                 .uri("/models?year=2015&make_id=" + brandId)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,((request, response) -> {
+                    throw new CarApiException(response.getStatusText());
+                }))
                 .body(ModelResponse.class);
 
         return body.data().stream()
