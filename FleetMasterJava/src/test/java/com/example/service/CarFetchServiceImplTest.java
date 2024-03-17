@@ -4,6 +4,8 @@ import com.example.configuration.ConfigProperty;
 import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.BrandResponse;
+import com.example.model.car.ModelDto;
+import com.example.model.car.ModelResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -53,5 +55,19 @@ class CarFetchServiceImplTest {
                 .andRespond(withBadRequest());
         //then
         assertThrows(CarApiException.class,()->carFetchService.getBrands());
+    }
+    @Test
+    void getModelsTestSuccess() throws JsonProcessingException {
+        //given
+        var models = List.of(new ModelDto("x3"),new ModelDto("x4"),new ModelDto("x5"));
+        var modelResponse = new ModelResponse(models);
+
+        //when
+        server.expect(requestTo("/models?year=2015&make_id=1"))
+                .andRespond(withSuccess(mapper.writeValueAsString(modelResponse),MediaType.APPLICATION_JSON));
+
+        //then
+        List<ModelDto> response = carFetchService.getModels(1);
+        assertThat(response).isEqualTo(models);
     }
 }
