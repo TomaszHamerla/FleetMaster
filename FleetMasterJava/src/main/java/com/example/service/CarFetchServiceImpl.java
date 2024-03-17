@@ -4,6 +4,8 @@ import com.example.configuration.ConfigProperty;
 import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.BrandResponse;
+import com.example.model.car.ModelDto;
+import com.example.model.car.ModelResponse;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -25,13 +27,25 @@ public class CarFetchServiceImpl implements CarFetchService {
         BrandResponse body = restClient.get()
                 .uri("/makes?year=2015")
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,((request, response) -> {
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     throw new CarApiException(response.getStatusText());
                 }))
                 .body(BrandResponse.class);
 
         return body.data().stream()
                 .map(b -> new BrandDto(b.id(), b.name()))
+                .toList();
+    }
+
+    @Override
+    public List<ModelDto> getModels(int brandId) {
+        ModelResponse body = restClient.get()
+                .uri("/models?year=2015&make_id=" + brandId)
+                .retrieve()
+                .body(ModelResponse.class);
+
+        return body.data().stream()
+                .map(m -> new ModelDto(m.name()))
                 .toList();
     }
 }
