@@ -70,4 +70,12 @@ class CarFetchServiceImplTest {
         List<ModelDto> response = carFetchService.getModels(1);
         assertThat(response).isEqualTo(models);
     }
+    @Test
+    void getModelsByBrandIdWithIdNotExistsThrowsCarApiException(){
+        //when
+        server.expect(requestTo("/models?year=2015&make_id=12232"))
+                .andRespond(withResourceNotFound());
+        //then
+        assertThrows(CarApiException.class,()->carFetchService.getModels(12232));
+    }
 }
