@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.configuration.ConfigProperty;
+import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.BrandResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,8 +16,9 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @RestClientTest(CarFetchServiceImpl.class)
 class CarFetchServiceImplTest {
@@ -42,5 +44,14 @@ class CarFetchServiceImplTest {
         //then
         List<BrandDto> response = carFetchService.getBrands();
         assertThat(response).isEqualTo(brands);
+    }
+
+    @Test
+    void getBrandsTestWithCarApiDoesNotWorkShouldTrowCarApiException() {
+        //when
+        server.expect(requestTo("/makes?year=2015"))
+                .andRespond(withBadRequest());
+        //then
+        assertThrows(CarApiException.class,()->carFetchService.getBrands());
     }
 }
