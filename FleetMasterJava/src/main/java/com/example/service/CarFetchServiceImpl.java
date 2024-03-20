@@ -59,7 +59,7 @@ public class CarFetchServiceImpl implements CarFetchService {
 
     private void validArrResult(List<ModelDto> models) {
         if (models.isEmpty())
-            throw new CarApiException("Not found");
+            throw new CarApiException("Given brand id not exists");
         log.info("Correct brandId");
     }
 }
