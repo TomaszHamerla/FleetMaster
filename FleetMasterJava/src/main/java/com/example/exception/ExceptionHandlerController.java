@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({UserNotFoundException.class, CarApiException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    ErrorResponse handleUserNotFoundException(UserNotFoundException e) {
+    ErrorResponse handleUserNotFoundException(Exception e) {
         log.error(e.getMessage());
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
