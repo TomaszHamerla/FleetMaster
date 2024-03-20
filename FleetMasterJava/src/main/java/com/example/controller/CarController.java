@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("api/v1/cars")
 @RequiredArgsConstructor
 public class CarController {
     private final CarFetchService carFetchService;
@@ -20,7 +20,7 @@ public class CarController {
     List<BrandDto>getBrands(){
         return carFetchService.getBrands();
     }
-    @GetMapping("/{brandId}")
+    @GetMapping("/brands/{brandId}")
     List<ModelDto>getModelsByBrandId(@PathVariable int brandId){
         return carFetchService.getModels(brandId);
     }
