@@ -54,28 +54,30 @@ class CarFetchServiceImplTest {
         server.expect(requestTo("/makes?year=2015"))
                 .andRespond(withBadRequest());
         //then
-        assertThrows(CarApiException.class,()->carFetchService.getBrands());
+        assertThrows(CarApiException.class, () -> carFetchService.getBrands());
     }
+
     @Test
     void getModelsTestSuccess() throws JsonProcessingException {
         //given
-        var models = List.of(new ModelDto("x3"),new ModelDto("x4"),new ModelDto("x5"));
+        var models = List.of(new ModelDto("x3"), new ModelDto("x4"), new ModelDto("x5"));
         var modelResponse = new ModelResponse(models);
 
         //when
         server.expect(requestTo("/models?year=2015&make_id=1"))
-                .andRespond(withSuccess(mapper.writeValueAsString(modelResponse),MediaType.APPLICATION_JSON));
+                .andRespond(withSuccess(mapper.writeValueAsString(modelResponse), MediaType.APPLICATION_JSON));
 
         //then
         List<ModelDto> response = carFetchService.getModels(1);
         assertThat(response).isEqualTo(models);
     }
+
     @Test
-    void getModelsByBrandIdWithIdNotExistsThrowsCarApiException(){
+    void getModelsByBrandIdWithIdNotExistsThrowsCarApiException() {
         //when
         server.expect(requestTo("/models?year=2015&make_id=12232"))
                 .andRespond(withResourceNotFound());
         //then
-        assertThrows(CarApiException.class,()->carFetchService.getModels(12232));
+        assertThrows(CarApiException.class, () -> carFetchService.getModels(12232));
     }
 }

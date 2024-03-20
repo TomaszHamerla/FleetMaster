@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.exception.BrandNotFoundException;
 import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.ModelDto;
@@ -83,7 +84,7 @@ class CarControllerTest {
     @Test
     void getModelsByBrandIdWithIdNotExistsShouldReturnsNotFound() throws Exception {
         //given
-        given(carFetchService.getModels(anyInt())).willThrow(new CarApiException("Given brand id not exists"));
+        given(carFetchService.getModels(anyInt())).willThrow(new BrandNotFoundException("Given brand id not exists"));
         //when + then
         mockMvc.perform(get("/api/v1/cars/brands/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.configuration.ConfigProperty;
+import com.example.exception.BrandNotFoundException;
 import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.BrandResponse;
@@ -59,7 +60,7 @@ public class CarFetchServiceImpl implements CarFetchService {
 
     private void validArrResult(List<ModelDto> models) {
         if (models.isEmpty())
-            throw new CarApiException("Given brand id not exists");
+            throw new BrandNotFoundException("Given brand id not exists");
         log.info("Correct brandId");
     }
 }
