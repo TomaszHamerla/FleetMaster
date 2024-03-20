@@ -1,9 +1,9 @@
 package com.example.controller;
 
+import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.ModelDto;
 import com.example.service.CarFetchService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +17,6 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -27,8 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CarControllerTest {
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    ObjectMapper objectMapper;
     @MockBean
     CarFetchService carFetchService;
 
@@ -58,6 +55,7 @@ class CarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
+
     @Test
     void getModelsByBrandIdTestSuccess() throws Exception {
         //given
@@ -80,5 +78,15 @@ class CarControllerTest {
         mockMvc.perform(get("/api/v1/cars/brands/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
+    }
+
+    @Test
+    void getModelsByBrandIdWithIdNotExistsShouldReturnsNotFound() throws Exception {
+        //given
+        given(carFetchService.getModels(anyInt())).willThrow(new CarApiException("Given brand id not exists"));
+        //when + then
+        mockMvc.perform(get("/api/v1/cars/brands/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Given brand id not exists"));
     }
 }
