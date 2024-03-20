@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.car.BrandDto;
+import com.example.model.car.ModelDto;
 import com.example.service.CarFetchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,6 +55,29 @@ class CarControllerTest {
                 """;
         //when + then
         mockMvc.perform(get("/cars").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(json));
+    }
+    @Test
+    void getModelsByBrandIdTestSuccess() throws Exception {
+        //given
+        List<ModelDto> modelDtos = List.of(new ModelDto("x1"), new ModelDto("x2"), new ModelDto("x3"));
+        given(carFetchService.getModels(anyInt())).willReturn(modelDtos);
+        var json = """
+                [
+                {
+                "name":"x1"
+                },
+                {
+                "name":"x2"
+                },
+                {
+                "name":"x3"
+                }
+                ]
+                """;
+        //when + then
+        mockMvc.perform(get("/cars/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
