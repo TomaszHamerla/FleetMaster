@@ -41,6 +41,21 @@ public class CarFetchServiceImpl implements CarFetchService {
     }
 
     @Override
+    public List<BrandDto> getBrands(int page, int limit) {
+        var uri = String.format("/makes?page=%d&limit=%d&year=2015", page, limit);
+        BrandResponse body = restClient.get()
+                .uri(uri)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (((request, response) -> {
+                    throw new CarApiException(response.getStatusText());
+                })))
+                .body(BrandResponse.class);
+        return body.data().stream()
+                .map(b -> new BrandDto(b.id(), b.name()))
+                .toList();
+    }
+
+    @Override
     public List<ModelDto> getModels(int brandId) {
         ModelResponse body = restClient.get()
                 .uri("/models?year=2015&make_id=" + brandId)
