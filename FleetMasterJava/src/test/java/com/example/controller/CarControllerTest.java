@@ -90,4 +90,13 @@ class CarControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Given brand id not exists"));
     }
+    @Test
+    void getBrandsWithPaginationNotFoundShouldReturnsNotFound() throws Exception {
+        //given
+        given(carFetchService.getBrands(anyInt(),anyInt())).willThrow(new CarApiException("Not found"));
+        //when + then
+        mockMvc.perform(get("/api/v1/cars/brands/2/25626").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Not found"));
+    }
 }
