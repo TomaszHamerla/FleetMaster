@@ -52,7 +52,7 @@ class CarControllerTest {
                 ]
                 """;
         //when + then
-        mockMvc.perform(get("/api/v1/cars").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/cars/brands").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
@@ -76,7 +76,7 @@ class CarControllerTest {
                 ]
                 """;
         //when + then
-        mockMvc.perform(get("/api/v1/cars/brands/1").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/cars/brands/models/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
@@ -86,8 +86,17 @@ class CarControllerTest {
         //given
         given(carFetchService.getModels(anyInt())).willThrow(new BrandNotFoundException("Given brand id not exists"));
         //when + then
-        mockMvc.perform(get("/api/v1/cars/brands/1").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/cars/brands/models/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Given brand id not exists"));
+    }
+    @Test
+    void getBrandsWithPaginationNotFoundShouldReturnsNotFound() throws Exception {
+        //given
+        given(carFetchService.getBrands(anyInt(),anyInt())).willThrow(new CarApiException("Not found"));
+        //when + then
+        mockMvc.perform(get("/api/v1/cars/brands/2/25626").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Not found"));
     }
 }

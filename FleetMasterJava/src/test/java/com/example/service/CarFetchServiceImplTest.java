@@ -80,4 +80,24 @@ class CarFetchServiceImplTest {
         //then
         assertThrows(CarApiException.class, () -> carFetchService.getModels(12232));
     }
+    @Test
+    void getBrandsWithPaginationSuccess() throws JsonProcessingException {
+        //given
+        var brands = List.of(new BrandDto(1, "Audi"), new BrandDto(2, "BWM"), new BrandDto(3, "Opel"));
+        var brandsResponse = new BrandResponse(brands);
+        //when
+        server.expect(requestTo("/makes?page=1&limit=3&year=2015"))
+                .andRespond(withSuccess(mapper.writeValueAsString(brandsResponse),MediaType.APPLICATION_JSON));
+        //then
+        List<BrandDto> response = carFetchService.getBrands(1, 3);
+        assertThat(response).isEqualTo(brands);
+    }
+    @Test
+    void getBrandsWithPaginationNotFoundThrowsCarApiException(){
+        //when
+        server.expect(requestTo("/makes?page=1&limit=4546643&year=2015"))
+                .andRespond(withResourceNotFound());
+        //then
+        assertThrows(CarApiException.class,()->carFetchService.getBrands(1,4546643));
+    }
 }

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CarFetchService {
     List<BrandDto> getBrands();
+    List<BrandDto> getBrands(int page, int limit);
     List<ModelDto> getModels(int brandId);
 }
