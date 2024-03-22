@@ -1,10 +1,13 @@
-package com.example.service;
+package com.example.service.impl;
 
 import com.example.model.car.BrandDto;
 import com.example.model.car.Car;
 import com.example.model.car.ModelDto;
 import com.example.model.user.User;
 import com.example.repository.UserRepository;
+import com.example.service.interfaces.CarFetchService;
+import com.example.service.interfaces.RentCarService;
+import com.example.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

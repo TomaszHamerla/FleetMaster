@@ -3,7 +3,7 @@ package com.example.controller;
 import com.example.converter.UserToUserDtoConverter;
 import com.example.model.user.User;
 import com.example.model.user.dto.UserDto;
-import com.example.service.UserService;
+import com.example.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

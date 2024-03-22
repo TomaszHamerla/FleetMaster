@@ -6,6 +6,7 @@ import com.example.model.car.BrandDto;
 import com.example.model.car.BrandResponse;
 import com.example.model.car.ModelDto;
 import com.example.model.car.ModelResponse;
+import com.example.service.impl.CarFetchServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

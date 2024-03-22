@@ -2,7 +2,7 @@ package com.example;
 
 import com.example.model.user.Role;
 import com.example.model.user.User;
-import com.example.service.UserService;
+import com.example.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

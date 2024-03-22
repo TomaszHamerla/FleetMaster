@@ -4,7 +4,7 @@ import com.example.exception.BrandNotFoundException;
 import com.example.exception.CarApiException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.ModelDto;
-import com.example.service.CarFetchService;
+import com.example.service.interfaces.CarFetchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
