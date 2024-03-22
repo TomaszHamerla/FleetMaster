@@ -60,17 +60,17 @@ class CarControllerTest {
     @Test
     void getModelsByBrandIdTestSuccess() throws Exception {
         //given
-        List<ModelDto> modelDtos = List.of(new ModelDto("x1"), new ModelDto("x2"), new ModelDto("x3"));
+        List<ModelDto> modelDtos = List.of(new ModelDto(1,"x1"), new ModelDto(2,"x2"), new ModelDto(3,"x3"));
         given(carFetchService.getModels(anyInt())).willReturn(modelDtos);
         var json = """
                 [
-                {
+                {"id": 1,
                 "name":"x1"
                 },
-                {
+                {"id": 2,
                 "name":"x2"
                 },
-                {
+                {"id": 3,
                 "name":"x3"
                 }
                 ]
