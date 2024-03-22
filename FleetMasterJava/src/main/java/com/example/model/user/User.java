@@ -29,6 +29,6 @@ public class User {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany
-    private List<Car> cars=new ArrayList<>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Car> cars = new ArrayList<>();
 }
