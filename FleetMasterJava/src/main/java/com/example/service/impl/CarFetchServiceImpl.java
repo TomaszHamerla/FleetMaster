@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.impl;
 
 import com.example.configuration.ConfigProperty;
 import com.example.exception.BrandNotFoundException;
@@ -7,6 +7,7 @@ import com.example.model.car.BrandDto;
 import com.example.model.car.BrandResponse;
 import com.example.model.car.ModelDto;
 import com.example.model.car.ModelResponse;
+import com.example.service.interfaces.CarFetchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class CarFetchServiceImpl implements CarFetchService {
                 .body(ModelResponse.class);
 
         List<ModelDto> models = body.data().stream()
-                .map(m -> new ModelDto(m.name()))
+                .map(m -> new ModelDto(m.id(),m.make_id(),m.name()))
                 .toList();
 
         validArrResult(models);

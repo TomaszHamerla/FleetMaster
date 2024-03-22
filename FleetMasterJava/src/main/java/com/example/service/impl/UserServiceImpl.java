@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.impl;
 
 import com.example.exception.InvalidCredentialsException;
 import com.example.exception.TooLongValueException;
@@ -9,6 +9,7 @@ import com.example.model.user.Role;
 import com.example.model.user.User;
 import com.example.model.user.dto.UserCredentials;
 import com.example.repository.UserRepository;
+import com.example.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

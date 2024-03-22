@@ -8,6 +8,7 @@ import com.example.model.user.Role;
 import com.example.model.user.User;
 import com.example.model.user.dto.UserCredentials;
 import com.example.repository.UserRepository;
+import com.example.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

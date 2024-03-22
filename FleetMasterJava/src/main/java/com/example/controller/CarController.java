@@ -2,7 +2,7 @@ package com.example.controller;
 
 import com.example.model.car.BrandDto;
 import com.example.model.car.ModelDto;
-import com.example.service.CarFetchService;
+import com.example.service.interfaces.CarFetchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
