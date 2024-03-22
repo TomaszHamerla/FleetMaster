@@ -66,7 +66,7 @@ public class CarFetchServiceImpl implements CarFetchService {
                 .body(ModelResponse.class);
 
         List<ModelDto> models = body.data().stream()
-                .map(m -> new ModelDto(m.name()))
+                .map(m -> new ModelDto(m.id(),m.make_id(),m.name()))
                 .toList();
 
         validArrResult(models);

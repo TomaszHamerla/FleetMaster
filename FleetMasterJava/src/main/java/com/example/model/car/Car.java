@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor
 @Data
@@ -16,6 +18,7 @@ public class Car {
     private String brand;
     private String model;
     private int year;
+    private LocalDateTime rentDate= LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
