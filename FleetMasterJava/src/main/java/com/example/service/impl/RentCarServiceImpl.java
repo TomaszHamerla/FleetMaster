@@ -27,7 +27,7 @@ public class RentCarServiceImpl implements RentCarService {
         Car car = new Car();
         car.setBrand(brandDto.name());
         car.setModel(modelDto.name());
-        car.setYear(2015);  //only cars since 2015 available
+        car.setProductionYear(2015);  //only cars since 2015 available
 
         car.setUser(user);
         user.getCars().add(car);

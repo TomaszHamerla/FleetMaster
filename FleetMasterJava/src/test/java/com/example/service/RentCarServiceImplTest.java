@@ -57,7 +57,7 @@ class RentCarServiceImplTest {
         assertThat(car.getBrand()).isEqualTo("Audi");
         assertThat(car.getModel()).isEqualTo("A3");
         assertThat(car.getUser()).isEqualTo(user);
-        assertThat(car.getYear()).isEqualTo(2015);
+        assertThat(car.getProductionYear()).isEqualTo(2015);
         assertThat(car.getRentDate()).isEqualTo(LocalDate.now());
     }
 }
