@@ -60,7 +60,7 @@ class CarFetchServiceImplTest {
     @Test
     void getModelsTestSuccess() throws JsonProcessingException {
         //given
-        var models = List.of(new ModelDto(1,"x3"), new ModelDto(2,"x4"), new ModelDto(3,"x5"));
+        var models = List.of(new ModelDto(1,2,"x3"), new ModelDto(2,2,"x4"), new ModelDto(3,2,"x5"));
         var modelResponse = new ModelResponse(models);
 
         //when
