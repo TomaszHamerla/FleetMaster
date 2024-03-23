@@ -1,5 +1,6 @@
 package com.example.service.interfaces;
 
+import com.example.model.car.Car;
 import com.example.model.user.User;
 import com.example.model.user.dto.UserCredentials;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,4 +15,5 @@ public interface UserService extends UserDetailsService {
     User save(User user);
 
     User updateUserCredentials(int userId, UserCredentials userCredentials);
+    List<Car> getUserCars(int userId);
 }

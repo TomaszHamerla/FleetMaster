@@ -4,6 +4,7 @@ import com.example.exception.InvalidCredentialsException;
 import com.example.exception.TooLongValueException;
 import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
+import com.example.model.car.Car;
 import com.example.model.user.Role;
 import com.example.model.user.User;
 import com.example.model.user.dto.UserCredentials;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,6 +98,23 @@ class UserServiceImplTest {
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("User not found");
         verify(repository, times(1)).findById(1);
+    }
+    @Test
+    void getUserCarsWithExistsUserId(){
+        //given
+        User user = users.get(0);
+        Car audi = new Car();
+        audi.setBrand("Audi");
+        audi.setModel("A3");
+        audi.setRentDate(LocalDate.now());
+        user.setCars(List.of(audi));
+        given(repository.findById(anyInt())).willReturn(Optional.of(user));
+
+        //when
+        List<Car> userCars = service.getUserCars(1);
+
+        //then
+        assertThat(userCars).isEqualTo(user.getCars());
     }
 
     @Test

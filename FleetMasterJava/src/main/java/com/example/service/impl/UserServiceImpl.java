@@ -4,6 +4,7 @@ import com.example.exception.InvalidCredentialsException;
 import com.example.exception.TooLongValueException;
 import com.example.exception.TooShortPasswordException;
 import com.example.exception.UserNotFoundException;
+import com.example.model.car.Car;
 import com.example.model.user.MyUserPrincipal;
 import com.example.model.user.Role;
 import com.example.model.user.User;
@@ -75,6 +76,12 @@ public class UserServiceImpl implements UserService {
         if (password != null)
             user.setPassword(passwordEncoder.encode(password));
         return user;
+    }
+
+    @Override
+    public List<Car> getUserCars(int userId) {
+        User user = getUserById(userId);
+       return user.getCars();
     }
 
     private boolean isValueLongerThen35Chars(String val) {
