@@ -2,9 +2,11 @@ package com.example.controller;
 
 import com.example.exception.TooLongValueException;
 import com.example.exception.UserNotFoundException;
+import com.example.model.car.Car;
 import com.example.model.user.Role;
 import com.example.model.user.User;
 import com.example.service.interfaces.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -159,5 +162,25 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Username or email too long for type character varying(35)"));
+    }
+    @Test
+    void getUserCarsWithUserExistsShouldReturnListOfCars() throws Exception {
+        //given
+        Car audi = new Car();
+        audi.setBrand("Audi");
+        audi.setModel("A3");
+        audi.setRentDate(LocalDate.now());
+        var cars = List.of(audi);
+        var json = objectMapper.writeValueAsString(cars);
+        given(service.getUserCars(anyInt())).willReturn(cars);
+
+        //when + then
+        mockMvc.perform(get("/api/v1/users/1/cars")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].brand").value("Audi"))
+                .andExpect(jsonPath("$[0].model").value("A3"))
+                .andExpect(jsonPath("$[0].rentDate").value(LocalDate.now().toString()));
+
     }
 }
