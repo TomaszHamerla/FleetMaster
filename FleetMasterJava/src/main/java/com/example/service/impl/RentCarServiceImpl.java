@@ -1,7 +1,9 @@
 package com.example.service.impl;
 
+import com.example.exception.CarIdNotFound;
 import com.example.model.car.BrandDto;
 import com.example.model.car.Car;
+import com.example.model.car.CarReturnResult;
 import com.example.model.car.ModelDto;
 import com.example.model.user.User;
 import com.example.repository.UserRepository;
@@ -10,6 +12,11 @@ import com.example.service.interfaces.RentCarService;
 import com.example.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +39,28 @@ public class RentCarServiceImpl implements RentCarService {
         car.setUser(user);
         user.getCars().add(car);
         return repository.save(user);
+    }
+
+    @Override
+    public CarReturnResult returnCar(int userId, int carId) {
+        User user = userService.getUserById(userId);
+        List<Car> cars = user.getCars().stream()
+                .filter(c -> c.getId() == carId)
+                .toList();
+        if (cars.isEmpty())
+            throw new CarIdNotFound("Given id not found !");
+
+        double amount = getAmount(cars);
+        return new CarReturnResult(amount,"PLN");
+    }
+
+    private double getAmount(List<Car> cars) {
+        Car car = cars.getFirst();
+        LocalDate now = LocalDate.now();
+        LocalDate rentDate = car.getRentDate();
+        int days = now.until(rentDate).getDays();
+        double amount = days*199.99;
+        return amount;
     }
 
     private ModelDto getModel(int brandId, int modelId) {
