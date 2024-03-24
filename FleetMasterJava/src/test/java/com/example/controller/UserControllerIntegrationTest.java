@@ -38,9 +38,9 @@ public class UserControllerIntegrationTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        ResultActions jhon = mockMvc.perform(post("http://localhost:8080/api/v1/users/login")
+        ResultActions resultActions = mockMvc.perform(post("http://localhost:8080/api/v1/users/login")
                 .with(httpBasic("Jhon", "123")));
-        MvcResult mvcResult = jhon.andReturn();
+        MvcResult mvcResult = resultActions.andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
         JSONObject jsonObject = new JSONObject(contentAsString);
         this.token = "Bearer " + jsonObject.get("token").toString();

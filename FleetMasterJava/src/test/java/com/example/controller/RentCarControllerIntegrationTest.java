@@ -1,6 +1,7 @@
 package com.example.controller;
 
-import org.json.JSONArray;
+import com.example.model.car.CarRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.time.LocalDate;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,9 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class CarControllerIntegrationTest {
+class RentCarControllerIntegrationTest {
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
     String token;
 
     @BeforeEach
@@ -40,33 +44,23 @@ public class CarControllerIntegrationTest {
     }
 
     @Test
-    void getBrandsSuccess() throws Exception {
-        ResultActions resultActions = mockMvc.perform(get("http://localhost:8080/api/v1/cars/brands")
-                        .accept(MediaType.APPLICATION_JSON)
+    void rentCarSuccess() throws Exception {
+        var carRequest = new CarRequest(1, 2, 3);
+        String json = objectMapper.writeValueAsString(carRequest);
+
+        mockMvc.perform(post("http://localhost:8080/api/v1/cars/rent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk());
-        MvcResult mvcResult = resultActions.andReturn();
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        JSONArray jsonArray = new JSONArray(contentAsString);
-        assertThat(jsonArray.length()).isNotZero();
-    }
-    @Test
-    void getModelsWithCorrectBrandIdSuccess() throws Exception {
-        ResultActions resultActions = mockMvc.perform(get("http://localhost:8080/api/v1/cars/brands/models/1")
+
+        mockMvc.perform(get("http://localhost:8080/api/v1/users/1/cars")
                         .accept(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, token))
-                .andExpect(status().isOk());
-        MvcResult mvcResult = resultActions.andReturn();
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        JSONArray jsonArray = new JSONArray(contentAsString);
-        assertThat(jsonArray.length()).isNotZero();
-    }
-    @Test
-    void getModelsWithBrandIdNotExists() throws Exception {
-        mockMvc.perform(get("http://localhost:8080/api/v1/cars/brands/models/1123123")
-                .accept(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, token))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Given brand id not exists"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].brand").value("Audi"))
+                .andExpect(jsonPath("$[0].model").value("A5"))
+                .andExpect(jsonPath("$[0].rentDate").value(LocalDate.now().toString()));
+
     }
 }
