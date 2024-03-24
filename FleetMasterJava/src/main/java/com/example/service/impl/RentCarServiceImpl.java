@@ -50,15 +50,17 @@ public class RentCarServiceImpl implements RentCarService {
         if (cars.isEmpty())
             throw new CarIdNotFound("Given id not found !");
 
-        double amount = getAmount(cars);
+        Car car = cars.getFirst();
+        double amount = getAmount(car);
+        user.getCars().remove(car);
+        repository.save(user);
         return new CarReturnResult(amount,"PLN");
     }
 
-    private double getAmount(List<Car> cars) {
-        Car car = cars.getFirst();
+    private double getAmount(Car car) {
         LocalDate now = LocalDate.now();
         LocalDate rentDate = car.getRentDate();
-        int days = now.until(rentDate).getDays();
+        int days = rentDate.until(now).getDays();
         double amount = days*199.99;
         return amount;
     }
