@@ -1,6 +1,8 @@
 package com.example.controller;
 
 import com.example.model.car.CarRequest;
+import com.example.model.car.CarReturnResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDate;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,6 +62,22 @@ class RentCarControllerIntegrationTest {
                 .andExpect(jsonPath("$[2].brand").value("Audi"))            //user with id 1 already got 2 car
                 .andExpect(jsonPath("$[2].model").value("A5"))
                 .andExpect(jsonPath("$[2].rentDate").value(LocalDate.now().toString()));
-
+    }
+    @Test
+    void returnCarSuccess() throws Exception {
+        mockMvc.perform(delete("http://localhost:8080/api/v1/cars/1/users/1/return")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION,token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount").value(0))
+                .andExpect(jsonPath("$.currency").value("PLN"));
+    }
+    @Test
+    void returnCarWithWrongCarIdReturn404() throws Exception {
+        mockMvc.perform(delete("http://localhost:8080/api/v1/cars/1252525/users/1/return")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION,token))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Given id not found !"));
     }
 }
