@@ -93,6 +93,7 @@ class RentCarServiceImplTest {
         //then
         assertThat(carResult.amount()).isEqualTo(199.99*10);
         assertThat(carResult.currency()).isEqualTo("PLN");
+        assertThat(user.getCarRentalBalance()).isEqualTo(199.99*10);
         assertThat(user.getCars()).isEmpty();
     }
     @Test

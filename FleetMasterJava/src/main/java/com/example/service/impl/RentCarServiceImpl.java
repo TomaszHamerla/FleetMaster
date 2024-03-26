@@ -51,17 +51,18 @@ public class RentCarServiceImpl implements RentCarService {
             throw new CarIdNotFound("Given id not found !");
 
         Car car = cars.getFirst();
-        double amount = getAmount(car);
+        double amount = getAmount(car,user);
         user.getCars().remove(car);
         repository.save(user);
         return new CarReturnResult(amount,"PLN");
     }
 
-    private double getAmount(Car car) {
+    private double getAmount(Car car,User user) {
         LocalDate now = LocalDate.now();
         LocalDate rentDate = car.getRentDate();
         int days = rentDate.until(now).getDays();
         double amount = days*199.99;
+        user.setCarRentalBalance(user.getCarRentalBalance()+amount);
         return amount;
     }
 
