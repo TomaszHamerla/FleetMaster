@@ -30,6 +30,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private double carRentalBalance = 0;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Car> cars = new ArrayList<>();
 }

@@ -10,6 +10,7 @@ import com.example.repository.UserRepository;
 import com.example.service.interfaces.CarFetchService;
 import com.example.service.interfaces.RentCarService;
 import com.example.service.interfaces.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,7 @@ public class RentCarServiceImpl implements RentCarService {
         int days = rentDate.until(now).getDays();
         double amount = days*199.99;
         user.setCarRentalBalance(user.getCarRentalBalance()+amount);
+        repository.save(user);
         return amount;
     }
 
