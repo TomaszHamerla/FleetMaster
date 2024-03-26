@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.model.user.Role;
 import com.example.model.user.User;
+import com.example.service.interfaces.RentCarService;
 import com.example.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DBDataInitializer implements CommandLineRunner {
     private final UserService userService;
+    private final RentCarService rentCarService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -29,5 +31,9 @@ public class DBDataInitializer implements CommandLineRunner {
         userService.save(u1);
         userService.save(u2);
 
+        rentCarService.rentCar(1,2,103);
+        rentCarService.rentCar(1,2,104);
+        rentCarService.rentCar(2,2,3);
+        rentCarService.rentCar(2,2,106);
     }
 }
