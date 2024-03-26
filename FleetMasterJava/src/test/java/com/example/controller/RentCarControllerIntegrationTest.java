@@ -58,9 +58,9 @@ class RentCarControllerIntegrationTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].brand").value("Audi"))
-                .andExpect(jsonPath("$[0].model").value("A5"))
-                .andExpect(jsonPath("$[0].rentDate").value(LocalDate.now().toString()));
+                .andExpect(jsonPath("$[2].brand").value("Audi"))            //user with id 1 already got 2 car
+                .andExpect(jsonPath("$[2].model").value("A5"))
+                .andExpect(jsonPath("$[2].rentDate").value(LocalDate.now().toString()));
 
     }
 }
