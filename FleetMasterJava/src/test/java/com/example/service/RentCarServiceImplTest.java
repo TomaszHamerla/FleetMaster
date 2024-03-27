@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.exception.CarIdNotFound;
+import com.example.exception.UserCarRentalBalanceException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.Car;
 import com.example.model.car.CarReturnResult;
@@ -20,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
@@ -68,6 +70,25 @@ class RentCarServiceImplTest {
         assertThat(car.getRentDate()).isEqualTo(LocalDate.now());
     }
     @Test
+    void rentCarWhenUserIsBlockedShouldThrowUserCarRentalBalanceException(){
+        //given
+        User user = new User();
+        user.setPassword("123");
+        user.setUsername("User");
+        user.setEmail("user@gmail.com");
+        user.setRole(Role.ADMIN);
+        user.setUserBlocked(true);
+        given(userService.getUserById(anyInt())).willReturn(user);
+
+        //when
+        Exception exception = catchException(() -> service.rentCar(1, 1, 1));
+
+        //then
+        assertThat(exception).isInstanceOf(UserCarRentalBalanceException.class)
+                .hasMessage("User with given id is blocked !");
+        verify(carFetchService,never()).getBrands();
+    }
+    @Test
     void returnCarSuccess(){
         //given
         Car car = new Car();
@@ -113,5 +134,32 @@ class RentCarServiceImplTest {
         assertThat(exception).isInstanceOf(CarIdNotFound.class)
                 .hasMessage("Given id not found !");
         verify(userRepository,never()).save(any());
+    }
+    @Test
+    void testUserIsBlockedWhenReturnCarAndHisBalanceIsOver10_000(){
+        //given
+        Car car = new Car();
+        car.setId(1);
+        car.setBrand("Audi");
+        car.setModel("A3");
+        car.setRentDate(LocalDate.now().minusDays(10));
+
+        User user = new User();
+        user.setPassword("123");
+        user.setUsername("User");
+        user.setEmail("user@gmail.com");
+        user.setRole(Role.ADMIN);
+        user.setCarRentalBalance(8100);
+        List<Car> cars = new ArrayList<>();
+        cars.add(car);
+        user.setCars(cars);
+        given(userService.getUserById(anyInt())).willReturn(user);
+        given(userRepository.save(user)).willReturn(user);
+
+        //when
+        service.returnCar(1,1);
+
+        //then
+        assertThat(user.isUserBlocked()).isEqualTo(true);
     }
 }

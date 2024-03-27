@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.example.exception.CarIdNotFound;
+import com.example.exception.UserCarRentalBalanceException;
 import com.example.model.car.BrandDto;
 import com.example.model.car.Car;
 import com.example.model.car.CarReturnResult;
@@ -28,9 +29,11 @@ public class RentCarServiceImpl implements RentCarService {
 
     @Override
     public User rentCar(int userId, int brandId, int modelId) {
+        User user = userService.getUserById(userId);
+        if (user.isUserBlocked())
+            throw new UserCarRentalBalanceException("User with given id is blocked !");
         BrandDto brandDto = getBrand(brandId);
         ModelDto modelDto = getModel(brandId, modelId);
-        User user = userService.getUserById(userId);
 
         Car car = new Car();
         car.setBrand(brandDto.name());
@@ -41,7 +44,6 @@ public class RentCarServiceImpl implements RentCarService {
         user.getCars().add(car);
         return repository.save(user);
     }
-
     @Override
     public CarReturnResult returnCar(int userId, int carId) {
         User user = userService.getUserById(userId);
@@ -54,8 +56,14 @@ public class RentCarServiceImpl implements RentCarService {
         Car car = cars.getFirst();
         double amount = getAmount(car,user);
         user.getCars().remove(car);
+        validUserRentalBalance(user);
         repository.save(user);
         return new CarReturnResult(amount,"PLN");
+    }
+    private void validUserRentalBalance(User user){
+        var balance = user.getCarRentalBalance();
+        if (balance>10000)
+            user.setUserBlocked(true);
     }
 
     private double getAmount(Car car,User user) {

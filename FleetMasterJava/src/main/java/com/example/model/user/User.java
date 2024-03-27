@@ -30,6 +30,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private double carRentalBalance = 0;
+    private boolean userBlocked = false; //if carRentalBalance is over then 10 000 then user gonna be blocked
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Car> cars = new ArrayList<>();
 }
