@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
 
     User updateUserCredentials(int userId, UserCredentials userCredentials);
     List<Car> getUserCars(int userId);
+    User depositMoney(int userId, double amount);
 }

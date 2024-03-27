@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.BDDAssertions.catchException;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -263,5 +264,19 @@ class UserServiceImplTest {
         //then
         assertThat(exception).isInstanceOf(InvalidCredentialsException.class)
                 .hasMessage("At least one of email or password must be provided. Please provide at least one to proceed.");
+    }
+    @Test
+    void depositMoneySuccess(){
+        //given
+        User user = users.getFirst();
+        user.setCarRentalBalance(5000);
+        given(repository.findById(anyInt())).willReturn(Optional.of(user));
+        given(repository.save(any())).willReturn(user);
+
+        //when
+        User savedUser = service.depositMoney(1, 4000);
+
+        //then
+        assertThat(savedUser.getCarRentalBalance()).isEqualTo(1000);
     }
 }

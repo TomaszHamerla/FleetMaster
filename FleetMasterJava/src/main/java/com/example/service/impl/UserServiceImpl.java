@@ -84,6 +84,15 @@ public class UserServiceImpl implements UserService {
        return user.getCars();
     }
 
+    @Override
+    public User depositMoney(int userId, double amount) {
+        User user = getUserById(userId);
+        double carRentalBalance = user.getCarRentalBalance();
+        carRentalBalance-=amount;
+        user.setCarRentalBalance(carRentalBalance);
+        return repository.save(user);
+    }
+
     private boolean isValueLongerThen35Chars(String val) {
         return val.length() > 35;
     }
