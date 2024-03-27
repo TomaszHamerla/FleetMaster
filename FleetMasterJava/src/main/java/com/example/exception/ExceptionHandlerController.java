@@ -54,4 +54,10 @@ public class ExceptionHandlerController {
         log.error(ex.getMessage());
         return new ErrorResponse(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
+    @ExceptionHandler(UserCarRentalBalanceException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    ErrorResponse handleUserCarRentalBalanceException(UserCarRentalBalanceException ex){
+        log.error(ex.getMessage());
+        return new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(),ex.getMessage());
+    }
 }
