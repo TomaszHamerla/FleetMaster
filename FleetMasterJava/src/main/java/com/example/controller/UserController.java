@@ -46,4 +46,9 @@ public class UserController {
         User savedUser = service.save(user);
         return converter.convert(savedUser);
     }
+    @PostMapping("/{userId}/payment")
+    UserDto handleMoneyDeposit(@PathVariable int userId,@RequestBody Double amount){
+        User user = service.depositMoney(userId, amount);
+        return converter.convert(user);
+    }
 }

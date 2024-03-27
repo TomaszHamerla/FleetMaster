@@ -24,9 +24,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -150,19 +150,21 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.message", containsString("Username is required")));
     }
+
     @Test
     void createUserWithUsernameOverThen35CharsShouldReturnStatus400() throws Exception {
         //given
         User user = users.get(0);
         user.setUsername("asdasdasdasasasasasasasasasasassasas");
         var json = objectMapper.writeValueAsString(user);
-        given(service.save(user)).willThrow(new  TooLongValueException("Username or email too long for type character varying(35)"));
+        given(service.save(user)).willThrow(new TooLongValueException("Username or email too long for type character varying(35)"));
 
         //when + then
         mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Username or email too long for type character varying(35)"));
     }
+
     @Test
     void getUserCarsWithUserExistsShouldReturnListOfCars() throws Exception {
         //given
@@ -171,16 +173,37 @@ class UserControllerTest {
         audi.setModel("A3");
         audi.setRentDate(LocalDate.now());
         var cars = List.of(audi);
-        var json = objectMapper.writeValueAsString(cars);
         given(service.getUserCars(anyInt())).willReturn(cars);
 
         //when + then
         mockMvc.perform(get("/api/v1/users/1/cars")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].brand").value("Audi"))
                 .andExpect(jsonPath("$[0].model").value("A3"))
                 .andExpect(jsonPath("$[0].rentDate").value(LocalDate.now().toString()));
 
+    }
+
+    @Test
+    void handleMoneyDepositSuccess() throws Exception {
+        //given
+        User user = users.getFirst();
+        user.setCarRentalBalance(5000);
+        Double depositAmount = 1000.0;
+        var body = objectMapper.writeValueAsString(depositAmount);
+        given(service.depositMoney(anyInt(),anyDouble())).willAnswer(invocation ->{
+            double amount = invocation.getArgument(1);
+            user.setCarRentalBalance(user.getCarRentalBalance()-amount);
+            return user;
+        });
+
+        //when + then
+        mockMvc.perform(post("/api/v1/users/1/payment")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.carRentalBalance").value(4000));
     }
 }
