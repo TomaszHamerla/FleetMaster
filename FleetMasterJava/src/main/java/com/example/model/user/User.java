@@ -18,7 +18,6 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private int id;
     @NotBlank(message = "Username is required")
     @Column(unique = true, length = 35)
