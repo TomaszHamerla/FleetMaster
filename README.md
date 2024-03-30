@@ -46,3 +46,17 @@ This application leverages these dependencies, including PostgreSQL, to create a
 Throughout the development process, the focus was primarily on writing comprehensive tests, including unit tests and integration tests. The project maintains a code coverage of 90%, ensuring thorough testing of the codebase.
 
 For integration tests, the H2 in-memory database was utilized, providing a lightweight and efficient solution for database testing.
+
+## Accessing Deployed Application on Azure
+
+For testing purposes, you can use the Swagger UI to interact with the API. You can access it using the following link:
+
+[Swagger UI](https://fleet-master-s.azurewebsites.net/swagger-ui/index.html#/)
+
+Please note that this application is deployed on a free tier, so it may take a moment to load.
+
+Login Credentials:
+
+- Username: Doe
+- Password: 456
+
