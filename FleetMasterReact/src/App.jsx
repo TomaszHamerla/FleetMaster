@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import LoginForm from "./Login/LoginForm";
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       <div className="left-background"></div>
       <div className="right-background"></div>
       <div className="center-background">
-        <div>Test</div>
+        <LoginForm/>
       </div>
     </div>
   );
