@@ -55,7 +55,6 @@ public class CarFetchServiceImpl implements CarFetchService {
                 .map(b -> new BrandDto(b.id(), b.name()))
                 .toList();
     }
-
     @Override
     public List<ModelDto> getModels(int brandId) {
         ModelResponse body = restClient.get()
