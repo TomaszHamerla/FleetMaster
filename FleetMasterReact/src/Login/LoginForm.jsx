@@ -39,19 +39,37 @@ const LoginForm = () => {
       },
     });
     if (!response.ok) {
-      throw new Error("Login failed");
+      throw new Error('Login failed');
     }
     const data = await response.json();
     const token = data.token;
     console.log(token);
     return token;
   };
+
+  const registerUser=async(username,email,password)=>{
+    const user={username:username,email:email,password:password};
+    const json = JSON.stringify(user);
+    const response = await fetch(`${API_BASE_URL}/users`,{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
+    });
+
+    if(response.status!==201){
+      throw new Error('Failed to register user.');
+    }
+    alert(`User ${username}, created successful !`)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (action === "Login") {
       loginUser(username,password);
     } else if (action === "Sign Up") {
-      console.log("Submitted:", { username, email, password });
+      registerUser(username,email,password);
     }
   };
 
