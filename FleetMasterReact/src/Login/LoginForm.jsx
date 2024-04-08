@@ -4,6 +4,17 @@ import "./LoginForm.css";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [action, setAction] = useState("Login");
+
+  const handleAction = (act) => {
+    if(act!== action){
+      setAction(act);
+      setUsername("");
+      setEmail("");
+      setPassword("");
+    }
+  };
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -13,15 +24,23 @@ const LoginForm = () => {
     setPassword(event.target.value);
   };
 
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (action === "Login") {
     console.log("Submitted:", { username, password });
+  } else if (action === "Sign Up") {
+    console.log("Submitted:", { username, email, password });
+  }
   };
 
   return (
     <div className="login-form-container">
       <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
+        <h2>{action}</h2>
         <div className="form-group">
           <label htmlFor="username" className="form-label">
             Username:
@@ -36,6 +55,24 @@ const LoginForm = () => {
             required
           />
         </div>
+        {action === "Sign Up" ? (
+          <div className="form-group">
+            <label htmlFor="username" className="form-label">
+              Email:
+            </label>
+            <input
+              placeholder="Email"
+              type="email"
+              id="username"
+              value={email}
+              onChange={handleEmailChange}
+              className="form-input"
+              required
+            />
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="form-group">
           <label htmlFor="password" className="form-label">
             Password:
@@ -50,9 +87,24 @@ const LoginForm = () => {
             required
           />
         </div>
-        <button type="submit" className="form-button">
-          Log In
-        </button>
+        <div className="buttons">
+          <button
+            type="submit"
+            className={action === "Login" ? "form-button-gray" : "form-button"}
+            onClick={() => handleAction("Login")}
+          >
+            Login
+          </button>
+          <button
+            type="submit"
+            className={
+              action === "Sign Up" ? "form-button-gray" : "form-button"
+            }
+            onClick={() => handleAction("Sign Up")}
+          >
+            Sign up
+          </button>
+        </div>
       </form>
     </div>
   );

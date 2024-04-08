@@ -36,13 +36,25 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
+.buttons{
+display: flex;
+justify-content: center;
+}
 .form-button {
-  width: 100%;
-  padding: 10px;
+  padding: 10px 40px;
+  margin: 5px;
   border: none;
   border-radius: 5px;
   background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+.form-button-gray{
+  padding: 10px 40px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #404346;
   color: #fff;
   cursor: pointer;
 }
