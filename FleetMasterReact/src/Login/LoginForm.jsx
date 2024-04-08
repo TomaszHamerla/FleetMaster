@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./LoginForm.css";
+import { API_BASE_URL } from "../config";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -8,7 +9,7 @@ const LoginForm = () => {
   const [action, setAction] = useState("Login");
 
   const handleAction = (act) => {
-    if(act!== action){
+    if (act !== action) {
       setAction(act);
       setUsername("");
       setEmail("");
@@ -28,13 +29,30 @@ const LoginForm = () => {
     setEmail(event.target.value);
   };
 
+  const loginUser = async (username, password) => {
+    const encodedCredentials = btoa(`${username}:${password}`);
+    const basicAuthHeader = `Basic ${encodedCredentials}`;
+    const response = await fetch(`${API_BASE_URL}/users/login`, {
+      method: "POST",
+      headers: {
+        Authorization: basicAuthHeader,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Login failed");
+    }
+    const data = await response.json();
+    const token = data.token;
+    console.log(token);
+    return token;
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     if (action === "Login") {
-    console.log("Submitted:", { username, password });
-  } else if (action === "Sign Up") {
-    console.log("Submitted:", { username, email, password });
-  }
+      loginUser(username,password);
+    } else if (action === "Sign Up") {
+      console.log("Submitted:", { username, email, password });
+    }
   };
 
   return (
