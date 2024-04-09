@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./LoginForm.css";
 import { API_BASE_URL } from "../config";
 
-const LoginForm = () => {
+const LoginForm = ({onLogin}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -43,8 +43,8 @@ const LoginForm = () => {
     }
     const data = await response.json();
     const token = data.token;
-    console.log(token);
-    return token;
+    sessionStorage.setItem('Token',token);
+    onLogin();
   };
 
   const registerUser=async(username,email,password)=>{
