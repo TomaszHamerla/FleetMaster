@@ -26,6 +26,7 @@ public class JwtProvider {
                 .expiresAt(now.plusSeconds(eightHours))
                 .subject(authentication.getName())
                 .claim("authorities", authorities)
+                .claim("userId",principal.user().getId())
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
