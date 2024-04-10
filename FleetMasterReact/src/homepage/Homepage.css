@@ -1,0 +1,54 @@
+.user-greeting {
+  font-size: 50px;
+  font-weight: bold;
+  color: #131010;
+  margin-bottom: 10px;
+  top: 50px;
+  left: 50px;
+  position: absolute;
+}
+
+.user-info {
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  bottom: 5%;
+  right: 20px;
+}
+
+.user-details p {
+  margin: 10px 0;
+}
+
+.user-details p strong {
+  font-weight: bold;
+  color: #555;
+}
+
+.user-details p span {
+  color: #777;
+}
+
+.button-container {
+  margin-bottom: 100px;
+}
+
+.button-container button {
+  display: block;
+  margin: 50px auto;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  font-size: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button-container button:hover {
+  background-color: #0e3b10;
+}
