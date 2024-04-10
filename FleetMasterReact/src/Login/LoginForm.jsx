@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./LoginForm.css";
 import { API_BASE_URL } from "../config";
 
-const LoginForm = ({onLogin}) => {
+const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -39,37 +39,42 @@ const LoginForm = ({onLogin}) => {
       },
     });
     if (!response.ok) {
-      throw new Error('Login failed');
+      throw new Error("Login failed");
     }
     const data = await response.json();
     const token = data.token;
-    sessionStorage.setItem('Token',token);
+    sessionStorage.setItem("Token", token);
+
+    const parts = token.split(".");
+    const payload = parts[1];
+    const userId = JSON.parse(window.atob(payload)).userId;
+    sessionStorage.setItem("userId", userId);
     onLogin();
   };
 
-  const registerUser=async(username,email,password)=>{
-    const user={username:username,email:email,password:password};
+  const registerUser = async (username, email, password) => {
+    const user = { username: username, email: email, password: password };
     const json = JSON.stringify(user);
-    const response = await fetch(`${API_BASE_URL}/users`,{
-      method:'POST',
+    const response = await fetch(`${API_BASE_URL}/users`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: json
+      body: json,
     });
 
-    if(response.status!==201){
-      throw new Error('Failed to register user.');
+    if (response.status !== 201) {
+      throw new Error("Failed to register user.");
     }
-    alert(`User ${username}, created successful !`)
-  }
+    alert(`User ${username}, created successful !`);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (action === "Login") {
-      loginUser(username,password);
+      loginUser(username, password);
     } else if (action === "Sign Up") {
-      registerUser(username,email,password);
+      registerUser(username, email, password);
     }
   };
 
