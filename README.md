@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/github/TomaszHamerla/FleetMaster/graph/badge.svg?token=C9VQRBMBVA)](https://codecov.io/github/TomaszHamerla/FleetMaster)
 # Fleet Master Application
 
 This project is a car fleet management application designed to simplify the process of car rental and user management. It facilitates travel organization and efficient fleet management.
