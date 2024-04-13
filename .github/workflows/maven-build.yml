@@ -33,3 +33,8 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: mvn --batch-mode -f FleetMasterJava/pom.xml package
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: TomaszHamerla/FleetMaster
