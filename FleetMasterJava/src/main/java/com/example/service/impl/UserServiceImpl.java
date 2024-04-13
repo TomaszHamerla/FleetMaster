@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
         return repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
-
     @Override
     public User save(User user) {
         if (isValueLongerThen35Chars(user.getUsername()) || isValueLongerThen35Chars(user.getEmail()))
