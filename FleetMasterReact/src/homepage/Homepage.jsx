@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
 import "./Homepage.css";
-import { BrowseCarsContent } from "../browseCars/BrowseCarsContent ";
+import { BrowseCarsContent } from "../browseCars/BrowseCarsContent";
 import { CheckFleetContent } from "../checkFleet/CheckFleetContent";
 import { PayRentContent } from "../payRent/PayRentContent";
 
@@ -32,7 +32,7 @@ export const Homepage = () => {
   };
 
   const handleBrowseCarsClick = () => {
-    setActiveComponent(<BrowseCarsContent />);
+    setActiveComponent(<BrowseCarsContent token={userToken}/>);
   };
 
   const handlePayRentClick = () => {
@@ -64,9 +64,11 @@ export const Homepage = () => {
        </div>
       {activeComponent ? (
         <div className="content-container">
+        <button onClick={handleReturnClick}>Wróć</button>
+        <div className="content-wrapper">
           {activeComponent}
-          <button onClick={handleReturnClick}>Wróć</button>
         </div>
+      </div>
       ) : (
         <div className="button-container">
           <button onClick={handleCheckFleetClick}>Sprawdź swoją flotę</button>
