@@ -1,23 +1,22 @@
 .user-greeting {
-  font-size: 50px;
+  font-size: 4vw;
   font-weight: bold;
   color: #131010;
-  margin-bottom: 10px;
-  top: 50px;
-  left: 50px;
+  margin: 0;
+  top: 5%;
+  left: 5%;
   position: absolute;
 }
 
 .user-info {
-  padding: 5px;
-  margin-bottom: 20px;
+  padding: 0.2em;
   border: 2px solid #ccc;
-  border-radius: 10px;
+  border-radius: 1em;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.1);
   position: absolute;
-  bottom: 1%;
-  right: 20px;
+  bottom: 0.5%;
+  right: 5%;
 }
 
 .user-details p {
@@ -34,7 +33,8 @@
 }
 
 .button-container {
-  margin-bottom: 100px;
+  position: absolute;
+  
 }
 
 .button-container button {
@@ -54,6 +54,7 @@
 }
 .content-container {
   position: absolute;
+  backdrop-filter: blur(10px);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -61,7 +62,7 @@
   max-width: 700px; 
   border: 1px solid #181717; 
   padding: 20px; 
-  max-height: 55%;
+  max-height: 50%;
   overflow-y: auto;
 }
 

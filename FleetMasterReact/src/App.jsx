@@ -26,12 +26,12 @@ function App() {
       <div className="right-background"></div>
       <div className="center-background">
         {isLoggedIn ? (
-          <div>
+          <>
             <div className="logout">
               <button onClick={handleLogout}>Logout</button>
             </div>
-            <Homepage/>
-          </div>
+            <Homepage />
+          </>
         ) : (
           <LoginForm onLogin={handleLogin} />
         )}

@@ -44,7 +44,7 @@ export const Homepage = () => {
   }
 
   return (
-    <div>
+    <>
       {user && <div className="user-greeting">Cześć {user.name}</div>}
       <div className="user-info">
         {user && (
@@ -76,6 +76,6 @@ export const Homepage = () => {
           <button onClick={handlePayRentClick}>Zapłać za wypożyczenie</button>
         </div>
       )}
-    </div>
+    </>
   );
 };
