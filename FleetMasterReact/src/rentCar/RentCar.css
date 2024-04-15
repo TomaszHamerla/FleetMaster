@@ -1,0 +1,24 @@
+.container-custom {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .container-custom p {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .container-custom button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .container-custom button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
+import { RentCar } from "../rentCar/RentCar";
 
 export const Models = ({ brandId, token }) => {
   const [models, setModels] = useState([]);
+  const [modelId, setModelId] = useState(false);
 
   useEffect(() => {
     const getModels = async () => {
@@ -21,15 +23,28 @@ export const Models = ({ brandId, token }) => {
     };
     getModels();
   }, []);
+
+  const handleModelClick = (modelId) => {
+    setModelId(modelId);
+  };
+
   return (
     <div className="brands-list-container">
-      <ul className="brands-list">
-        {models.map((model) => (
-          <li key={model.id} className="brand-item">
-            {model.name}
-          </li>
-        ))}
-      </ul>
+      {!modelId ? (
+        <ul className="brands-list">
+          {models.map((model) => (
+            <li
+              key={model.id}
+              className="brand-item"
+              onClick={() => handleModelClick(model.id)}
+            >
+              {model.name}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <RentCar brandId={brandId} modelId={modelId} token={token} />
+      )}
     </div>
   );
 };
