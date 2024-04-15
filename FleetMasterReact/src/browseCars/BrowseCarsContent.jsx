@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
 import "./BrowseCarsContent.css"
+import { Models } from "./Models";
 
 export const BrowseCarsContent = ({ token }) => {
   const [brands, setBrands] = useState([]);
+  const [brandId, setBrandId]=useState(false);
 
   useEffect(() => {
     const getBrands = async () => {
@@ -19,15 +21,20 @@ export const BrowseCarsContent = ({ token }) => {
     };
     getBrands();
   }, []);
+
+  const handleBrandClick = (brandId) => {
+    setBrandId(brandId);
+  };
+
   return (
     <div className="brands-list-container">
-      <ul className="brands-list">
+     {!brandId ? <ul className="brands-list">
         {brands.map((brand) => (
-          <li key={brand.id} className="brand-item">
+          <li key={brand.id} className="brand-item" onClick={()=>handleBrandClick(brand.id)}>
             {brand.name}
           </li>
         ))}
-      </ul>
+      </ul>:<Models brandId={brandId} token={token}/>}
     </div>
   );
 };
