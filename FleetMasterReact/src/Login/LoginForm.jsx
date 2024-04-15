@@ -38,10 +38,11 @@ const LoginForm = ({ onLogin }) => {
         Authorization: basicAuthHeader,
       },
     });
+    const data = await response.json();
     if (!response.ok) {
+      alert(`${data.message}`)
       throw new Error("Login failed");
     }
-    const data = await response.json();
     const token = data.token;
     sessionStorage.setItem("Token", token);
 
