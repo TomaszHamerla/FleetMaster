@@ -6,10 +6,12 @@ import com.example.service.interfaces.RentCarService;
 import com.example.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Profile("test")
 public class DBDataInitializer implements CommandLineRunner {
     private final UserService userService;
     private final RentCarService rentCarService;
