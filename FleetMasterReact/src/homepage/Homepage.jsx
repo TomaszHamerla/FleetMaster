@@ -28,7 +28,7 @@ export const Homepage = () => {
   }, []);
 
   const handleCheckFleetClick = () => {
-    setActiveComponent(<CheckFleetContent />);
+    setActiveComponent(<CheckFleetContent token={userToken} userId={userId}/>);
   };
 
   const handleBrowseCarsClick = () => {
