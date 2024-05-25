@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import LoginForm from "./login/LoginForm";
+import LoginForm from "./Login/LoginForm";
 import { Homepage } from "./homepage/Homepage";
 
 function App() {
