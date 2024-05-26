@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Homepage should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="user-info"
+  />
+  <div
+    class="button-container"
+  >
+    <button>
+      Sprawdź swoją flotę
+    </button>
+    <button>
+      Przeglądaj samochody
+    </button>
+    <button>
+      Zapłać za wypożyczenie
+    </button>
+  </div>
+</DocumentFragment>
+`;

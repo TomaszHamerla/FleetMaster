@@ -5,7 +5,7 @@ import { BrowseCarsContent } from "../browseCars/BrowseCarsContent";
 import { CheckFleetContent } from "../checkFleet/CheckFleetContent";
 import { PayRentContent } from "../payRent/PayRentContent";
 
-export const Homepage = () => {
+  const Homepage = () => {
   const [user, setUser] = useState(null);
   const [activeComponent, setActiveComponent] = useState(null);
 
@@ -79,3 +79,5 @@ export const Homepage = () => {
     </>
   );
 };
+
+export default Homepage;
