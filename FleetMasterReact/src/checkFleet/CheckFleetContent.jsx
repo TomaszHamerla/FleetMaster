@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { API_BASE_URL } from "../config";
+import { ReturnCar } from '../returnCar/ReturnCar';
 
 export const CheckFleetContent = ({token,userId}) => {
   const[cars,setCars]=useState([]);
@@ -22,7 +23,7 @@ export const CheckFleetContent = ({token,userId}) => {
     <div className="cars-list-container">
       <ul>
         {cars.map((car)=>(
-          <li key={car.id}>{car.brand} {car.model} Production year: {car.productionYear} Rent date: {car.rentDate}</li>
+          <li key={car.id}>{car.brand} {car.model} Production year: {car.productionYear} Rent date: {car.rentDate}   <ReturnCar carId={car.id}/></li>
         ))}
       </ul>
     </div>
