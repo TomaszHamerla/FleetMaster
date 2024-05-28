@@ -2,7 +2,7 @@ import React from "react";
 import { API_BASE_URL } from "../config";
 import "./RentCar.css";
 
-export const RentCar = ({ brandId, modelId, token }) => {
+export const RentCar = ({ brandId, modelId, token, onRentSuccess }) => {
   const rentCar = async () => {
     const body = {
       userId: sessionStorage.getItem("userId"),
@@ -23,6 +23,7 @@ export const RentCar = ({ brandId, modelId, token }) => {
       alert(message.message);
     }
     alert('Samód został wyporzyczony pomyślnie !')
+    onRentSuccess();
   };
 
   const handleRentCar = () => {
@@ -30,8 +31,8 @@ export const RentCar = ({ brandId, modelId, token }) => {
   };
   return (
     <div className="container-custom">
-      <p>Czy chcesz wypożyczyć samochód?</p>
-      <button onClick={handleRentCar}>Tak</button>
+      <p> Czy chcesz wypożyczyć samochód? </p>
+      <button onClick={handleRentCar}> Tak </button>
     </div>
   );
 };

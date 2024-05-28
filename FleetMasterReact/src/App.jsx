@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import LoginForm from "./login/LoginForm";
-import { Homepage } from "./homepage/Homepage";
+import Homepage from "./homepage/Homepage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -6,6 +6,10 @@ export const Models = ({ brandId, token }) => {
   const [models, setModels] = useState([]);
   const [modelId, setModelId] = useState(false);
 
+  const handleRentSuccess = () => {
+    setModelId(null);
+  };
+
   useEffect(() => {
     const getModels = async () => {
       const response = await fetch(
@@ -43,7 +47,7 @@ export const Models = ({ brandId, token }) => {
           ))}
         </ul>
       ) : (
-        <RentCar brandId={brandId} modelId={modelId} token={token} />
+        <RentCar brandId={brandId} modelId={modelId} token={token} onRentSuccess={handleRentSuccess}/>
       )}
     </div>
   );
