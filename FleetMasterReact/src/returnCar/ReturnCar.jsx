@@ -7,7 +7,7 @@ export const ReturnCar = ({carId}) => {
     const userId = sessionStorage.getItem("userId");
       try{
       const response = await fetch(`${API_BASE_URL}/cars/${carId}/users/${userId}/return`,{
-        method:"DELETE",
+        method: "DELETE",
         headers:{
           "Content-Type": "application/json",
           Authorization: userToken,
@@ -20,6 +20,7 @@ export const ReturnCar = ({carId}) => {
       }
 
       alert('Samochód został zwrócony pomyślnie!');
+      window.location.reload();
     } catch (error) {
       alert('Wystąpił błąd podczas zwracania samochodu. Spróbuj ponownie później.');
       console.error('Error:', error);

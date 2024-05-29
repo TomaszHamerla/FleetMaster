@@ -9,14 +9,13 @@
 }
 
 .user-info {
-  padding: 0.2em;
   border: 2px solid #ccc;
   border-radius: 1em;
   background-color: #f9f9f9;
   box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.1);
   position: absolute;
-  bottom: 0.5%;
-  right: 5%;
+  bottom: 1%;
+  right: 2%;
 }
 
 .user-details p {
