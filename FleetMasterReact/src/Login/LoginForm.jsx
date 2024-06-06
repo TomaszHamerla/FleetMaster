@@ -105,7 +105,7 @@ const LoginForm = ({ onLogin }) => {
             <input
               placeholder="Email"
               type="email"
-              id="username"
+              id="email"
               value={email}
               onChange={handleEmailChange}
               className="form-input"
